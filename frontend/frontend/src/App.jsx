@@ -33,10 +33,10 @@ if (!title.trim() || !time.trim()) {
       body: JSON.stringify({ title, time }),
     });
 
-    loadShifts();
+setTimeout(() => {
+  loadShifts();
+}, 500);
 
-    setTitle("");
-    setTime("");
   };
 
   return (
