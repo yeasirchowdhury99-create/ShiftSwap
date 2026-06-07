@@ -25,7 +25,7 @@ if (!title.trim() || !time.trim()) {
   return;
 }
 
-    await fetch("http://127.0.0.1:8000/api/shifts", {
+    await fetch("https://shiftswap-tj4g.onrender.com/api/shifts", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
