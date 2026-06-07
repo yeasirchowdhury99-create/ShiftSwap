@@ -10,20 +10,19 @@ function App() {
     loadShifts();
   }, []);
 
-  // Load shifts
+  // ✅ Load shifts
   const loadShifts = async () => {
     const res = await fetch("https://shiftswap-tj4g.onrender.com/api/shifts");
     const data = await res.json();
     setShifts(data);
   };
 
-  // Create shift
+  // ✅ Create shift
   const createShift = async () => {
-    
-if (!title.trim() || !time.trim()) {
-  alert("Please enter both fields");
-  return;
-}
+    if (!title.trim() || !time.trim()) {
+      alert("Please enter both fields");
+      return;
+    }
 
     await fetch("https://shiftswap-tj4g.onrender.com/api/shifts", {
       method: "POST",
@@ -33,45 +32,118 @@ if (!title.trim() || !time.trim()) {
       body: JSON.stringify({ title, time }),
     });
 
-setTimeout(() => {
-  loadShifts();
-}, 500);
+    // ✅ delay fix
+    setTimeout(() => {
+      loadShifts();
+    }, 500);
 
+    setTitle("");
+    setTime("");
+  };
+
+  // ✅ DELETE FUNCTION (NEW FEATURE)
+  const deleteShift = async (id) => {
+    await fetch(`https://shiftswap-tj4g.onrender.com/api/shifts/${id}`, {
+      method: "DELETE",
+    });
+
+    setTimeout(() => {
+      loadShifts();
+    }, 500);
   };
 
   return (
-    <div style={{ textAlign: "center", marginTop: "50px" }}>
-      <h1>ShiftSwap App</h1>
+    <div
+      style={{
+        textAlign: "center",
+        marginTop: "50px",
+        fontFamily: "Arial",
+        backgroundColor: "#f4f6f9",
+        minHeight: "100vh",
+        padding: "20px",
+      }}
+    >
+      <h1 style={{ color: "#2c3e50" }}>ShiftSwap App</h1>
 
+      {/* ✅ INPUTS */}
       <input
         placeholder="Title"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
+        style={{ padding: "10px", margin: "5px", width: "200px" }}
       />
-
-      <br /><br />
+      <br />
 
       <input
         placeholder="Time"
         value={time}
         onChange={(e) => setTime(e.target.value)}
+        style={{ padding: "10px", margin: "5px", width: "200px" }}
       />
+      <br />
 
-      <br /><br />
+      {/* ✅ ADD BUTTON */}
+      <button
+        onClick={createShift}
+        style={{
+          padding: "10px 20px",
+          backgroundColor: "#3498db",
+          color: "white",
+          border: "none",
+          cursor: "pointer",
+          marginTop: "10px",
+        }}
+      >
+        Add Shift
+      </button>
 
-      <button onClick={createShift}>Add Shift</button>
+      <hr style={{ margin: "20px" }} />
 
-      <hr />
+      {/* ✅ SHOW BUTTON */}
+      <button
+        onClick={loadShifts}
+        style={{
+          padding: "10px 20px",
+          backgroundColor: "#2ecc71",
+          color: "white",
+          border: "none",
+          cursor: "pointer",
+          marginBottom: "20px",
+        }}
+      >
+        Show Shifts
+      </button>
 
-      <button onClick={loadShifts}>Show Shifts</button>
-
-      <ul>
-        {shifts.map((shift, index) => (
-          <li key={index}>
+      {/* ✅ DISPLAY SHIFTS */}
+      <div>
+        {shifts.map((shift) => (
+          <div
+            key={shift.id}
+            style={{
+              marginBottom: "10px",
+              fontSize: "18px",
+              color: "#34495e",
+            }}
+          >
             {shift.title} - {shift.time}
-          </li>
+
+            {/* ✅ DELETE BUTTON */}
+            <button
+              onClick={() => deleteShift(shift.id)}
+              style={{
+                marginLeft: "10px",
+                backgroundColor: "red",
+                color: "white",
+                border: "none",
+                padding: "5px 10px",
+                cursor: "pointer",
+              }}
+            >
+              Delete
+            </button>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }
