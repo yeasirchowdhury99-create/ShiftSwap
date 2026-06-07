@@ -37,3 +37,9 @@ def add_shift(shift: Shift):
     }]).execute()
 
     return response.data
+
+# ✅ DELETE SHIFT
+@app.delete("/api/shifts/{shift_id}")
+def delete_shift(shift_id: int):
+    response = supabase.table("shifts").delete().eq("id", shift_id).execute()
+    return {"message": "Shift deleted"}
