@@ -12,7 +12,7 @@ function App() {
 
   // Load shifts
   const loadShifts = async () => {
-    const res = await fetch("http://127.0.0.1:8000/api/shifts");
+    const res = await fetch("https://shiftswap-tj4g.onrender.com/api/shifts");
     const data = await res.json();
     setShifts(data);
   };
